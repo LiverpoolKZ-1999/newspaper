@@ -1,0 +1,39 @@
+version: "3.9"
+
+volumes:
+  newspaper_postgres_data: {}
+  newspaper_redis_data: {}
+  newspaper_rabbitmq_data: {}
+  newspaper_static_data: {}
+  newspaper_media_data: {}
+
+
+services:
+  newspaper_db:
+    image: postgres:13-alpine
+    ports:
+      - '5435:5432'
+    volumes:
+      - newspaper_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: md5
+      POSTGRES_INITDB_ARGS: "--auth-host=md5"
+    env_file:
+      - .env
+
+  newspaper_app:
+    restart: always
+    build:
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "8011:8011"
+    volumes:
+      - .:/app
+      - newspaper_static_data:/static
+      - newspaper_media_data:/media
+    entrypoint:
+      - /scripts/start.gunicorn.sh
+    depends_on:
+      - newspaper_db
