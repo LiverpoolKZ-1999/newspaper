@@ -34,7 +34,7 @@ echo "$PWD"
 TEST_PATH="$PWD"
 ls "$TEST_PATH"
 
-# python manage.py makemigrations
+python manage.py makemigrations
 python manage.py migrate
 
 python manage.py collectstatic --noinput
