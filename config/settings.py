@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from environ import Env
@@ -32,6 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost"]
 
+LOCALE_PATHS = [os.path.join(BASE_DIR), "locale"]
+
+IS_LOCAL: bool = env.bool("IS_LOCAL", False)
 
 # Application definition
 
@@ -43,6 +47,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
 SIDE_APPS = [
     "corsheaders",
     "rest_framework",
@@ -54,6 +59,8 @@ SIDE_APPS = [
 ]
 PROJECT_APPS = [
     "app.auth_.apps.AuthConfig",
+    "app.core.apps.CoreConfig",
+    "app.common.apps.CommonConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + SIDE_APPS + PROJECT_APPS
@@ -68,11 +75,11 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 AUTH_USER_MODEL = "auth_.User"
@@ -151,14 +158,18 @@ USE_TZ = True
 
 # STATIC
 # -----------------------------------------------------------------------------
-STATIC_ROOT = "/static"
-STATIC_URL: str = "/static/"
-STATIC_DIR = BASE_DIR / "static"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_FILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
 ]
+
+MEDIA_URL: str = "/media/"
+MEDIA_ROOT: str = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AWS_TEMP_STORAGE_BUCKET_NAME = env.str("AWS_TEMP_STORAGE_BUCKET_NAME", None)

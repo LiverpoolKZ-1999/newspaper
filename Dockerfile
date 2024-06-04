@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /project
 
 # Install build dependencies and clean up in a single RUN command to minimize layers
 RUN apt-get update \
@@ -35,7 +35,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 RUN mkdir -p /static /media
 
 # Copy the application code
-COPY . /app
+COPY . /project
 
 # Expose the desired port
 EXPOSE 8011

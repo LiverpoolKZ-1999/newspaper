@@ -8,5 +8,5 @@ environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 wsgi_application: WSGIHandler = get_wsgi_application()
 application = WhiteNoise(
     application=wsgi_application,
-    root="/app/static",
+    root="/project/static",
 )

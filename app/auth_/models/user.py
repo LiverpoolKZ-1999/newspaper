@@ -18,6 +18,17 @@ class CustomUserManager(BaseUserManager):
     def get_by_natural_key(self, email):
         return self.get(email=email)
 
+    def create_superuser(self, email, password):
+        user = self.model(
+            email=email,
+            is_staff=True,
+            is_active=True,
+            is_superuser=True,
+        )
+        user.set_password(password)
+        user.save()
+        return user
+
 
 class User(Timestamped, PermissionsMixin, AbstractBaseUser):
     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True)

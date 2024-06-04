@@ -22,3 +22,5 @@ flake8==7.0.0
 pep8-naming==0.12.1
 isort==5.13.2
 djangorestframework-simplejwt
+drf-spectacular==0.18.1
+boto3==1.18.32

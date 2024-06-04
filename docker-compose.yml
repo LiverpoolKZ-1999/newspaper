@@ -30,7 +30,7 @@ services:
     ports:
       - "8011:8011"
     volumes:
-      - .:/app
+      - .:/project
       - newspaper_static_data:/static
       - newspaper_media_data:/media
     entrypoint:
